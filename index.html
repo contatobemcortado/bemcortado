@@ -1,7 +1,26 @@
-<title>Bem Cortado Papelaria</title>
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bem Cortado · Papelaria Fofa – Catálogo</title>
+<meta name="description" content="Catálogo da Bem Cortado: escolha os produtos, veja fotos e preços e envie seu pedido pelo WhatsApp.">
+<meta name="theme-color" content="#A898E0">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://contatobemcortado.github.io/bemcortado/">
+<meta property="og:title" content="Catálogo Bem Cortado · Papelaria Fofa">
+<meta property="og:description" content="Veja fotos e preços, monte seu pedido e envie pelo WhatsApp 💜">
+<meta property="og:image" content="https://contatobemcortado.github.io/bemcortado/capa.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="icone.png">
+<link rel="apple-touch-icon" href="icone.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap">
 <style>
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 /* Identidade Bem Cortado · Papelaria Fofa: lilás, rosa e menta em degradê (tema claro único, de propósito) */
 :root{
   color-scheme:light;
@@ -136,6 +155,8 @@ input{width:100%;font:inherit;padding:11px 14px;border-radius:999px;border:1.5px
 }
 </style>
 
+</head>
+<body>
 <header class="topo"><div class="topo-in" id="topo"></div></header>
 <main id="tela"></main>
 
@@ -376,3 +397,6 @@ abrirPeloLink();
 window.addEventListener("hashchange", () => { abrirPeloLink(); render(); window.scrollTo(0, 0); });
 render(); atualizarBarra();
 </script>
+
+</body>
+</html>
