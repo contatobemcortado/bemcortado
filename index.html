@@ -315,5 +315,20 @@ $("f-nome").oninput = () => { $("f-enviar").href = waLink(mensagem()); };
 $("f-limpar").onclick = () => { carrinho = {}; salvar(); fecharFolha(); atualizarBarra(); render(); };
 document.addEventListener("keydown", e => { if (e.key === "Escape") fecharFolha(); });
 
+// link direto para uma categoria: ...#papel-crepom abre direto nela
+function caminhoAte(id, lista = CATS, trilha = []){
+  for (const c of lista){
+    if (c.id === id) return trilha.concat(c.id);
+    if (c.sub){ const r = caminhoAte(id, c.sub, trilha.concat(c.id)); if (r) return r; }
+  }
+  return null;
+}
+function abrirPeloLink(){
+  const id = decodeURIComponent((location.hash || "").slice(1));
+  const cam = id ? caminhoAte(id) : null;
+  if (cam){ pilha = cam; }
+}
+abrirPeloLink();
+window.addEventListener("hashchange", () => { abrirPeloLink(); render(); window.scrollTo(0, 0); });
 render(); atualizarBarra();
 </script>
