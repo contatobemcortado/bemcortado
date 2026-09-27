@@ -45,31 +45,36 @@ main{max-width:760px;margin:0 auto;padding:22px 16px 0}
 .dica{color:var(--suave);font-size:15px;margin:4px auto 18px;max-width:34ch;text-align:center}
 .dica b{color:var(--framboesa)}
 
-/* lista de categorias */
-.cats{display:grid;gap:12px;grid-template-columns:1fr}
-@media (min-width:560px){.cats{grid-template-columns:1fr 1fr}}
-.cat{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--cartao);border:1.5px solid var(--linha);border-radius:22px;padding:15px 16px;box-shadow:0 3px 0 var(--linha)}
-.cat::before{content:"";flex:none;width:12px;height:12px;border-radius:50%;background:var(--cor-bola,var(--lilas))}
-.cat:nth-child(3n+2){--cor-bola:var(--rosa)}
-.cat:nth-child(3n+3){--cor-bola:var(--menta)}
-.cat b{font-family:var(--display);font-weight:600;font-size:18px;flex:1;color:var(--texto)}
+/* lista de categorias: cartões com foto */
+.cats{display:grid;gap:12px;grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (min-width:640px){.cats{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.cat{display:flex;flex-direction:column;width:100%;text-align:left;background:var(--cartao);border:1.5px solid var(--linha);border-radius:22px;padding:0;overflow:hidden;box-shadow:0 3px 0 var(--linha)}
+.cat-foto{display:block;aspect-ratio:1/1;max-width:100%;background:#fff;position:relative;border-bottom:4px solid var(--cor-bola,var(--lilas))}
+.cat:nth-child(3n+2) .cat-foto{--cor-bola:var(--rosa)}
+.cat:nth-child(3n+3) .cat-foto{--cor-bola:var(--menta)}
+.cat-foto img{width:100%;height:100%;object-fit:contain;display:block;padding:8px}
+.cat-foto.sem,.cat-breve .cat-foto{background:radial-gradient(circle at 30% 30%,var(--rosa-claro) 0 20%,transparent 21%),radial-gradient(circle at 70% 68%,var(--menta-claro) 0 24%,transparent 25%),var(--lilas-claro)}
+.cat-txt{display:flex;flex-direction:column;gap:6px;padding:10px 12px 12px;align-items:flex-start}
+.cat b{font-family:var(--display);font-weight:600;font-size:17px;line-height:1.15;color:var(--texto);text-wrap:balance}
 .cat .qt{font-size:12px;color:var(--uva);background:var(--lilas-claro);border-radius:999px;padding:3px 10px;font-weight:700}
 .cat .qt.breve{color:var(--framboesa);background:var(--rosa-claro)}
-.cat .seta{color:var(--rosa);font-weight:800;font-size:22px}
 
 /* produtos */
-.grade{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-@media (min-width:640px){.grade{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.grade{display:grid;grid-template-columns:1fr;gap:14px}
+@media (min-width:520px){.grade{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:760px){.grade{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .prod{background:var(--cartao);border:1.5px solid var(--linha);border-radius:22px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 3px 0 var(--linha)}
 .prod.sel{border-color:var(--menta);box-shadow:0 3px 0 var(--menta)}
 .foto{position:relative;background:#fff;aspect-ratio:1/1;max-width:100%}
 .foto img{width:100%;height:100%;object-fit:contain;display:block}
 .num{position:absolute;top:8px;left:8px;background:var(--degrade);color:#fff;font-family:var(--display);font-weight:600;font-size:12px;border-radius:999px;padding:3px 9px;font-variant-numeric:tabular-nums;text-shadow:0 1px 1px rgba(90,70,140,.35)}
 .info{padding:10px 12px 12px;display:flex;flex-direction:column;gap:4px;flex:1}
-.nome{font-weight:700;font-size:14px;line-height:1.3}
+.nome{font-weight:700;font-size:16px;line-height:1.3}
+.foto.toca{cursor:zoom-in}
+.foto.toca::after{content:"🔍 toque para ampliar";position:absolute;right:8px;bottom:8px;font-size:11px;font-weight:700;color:var(--uva);background:rgba(255,255,255,.9);border-radius:999px;padding:3px 8px}
 .det{font-size:12px;color:var(--suave);font-variant-numeric:tabular-nums;white-space:pre-line}
-.preco{font-family:var(--display);font-weight:700;font-size:20px;color:var(--framboesa);margin-top:auto;padding-top:4px;font-variant-numeric:tabular-nums}
-.add{margin-top:6px;border:0;border-radius:999px;background:var(--folha);color:#fff;font-weight:800;padding:10px 8px;font-size:14px}
+.preco{font-family:var(--display);font-weight:700;font-size:23px;color:var(--framboesa);margin-top:auto;padding-top:4px;font-variant-numeric:tabular-nums}
+.add{width:100%;margin-top:6px;border:0;border-radius:999px;background:var(--folha);color:#fff;font-weight:800;padding:13px 8px;font-size:16px}
 .qtd{margin-top:6px;display:grid;grid-template-columns:40px 1fr 40px;align-items:center;border:2px solid var(--menta);border-radius:999px;overflow:hidden;background:var(--menta-claro)}
 .qtd button{border:0;background:transparent;font-size:20px;font-weight:800;color:var(--folha);height:36px}
 .qtd span{text-align:center;font-weight:800;font-variant-numeric:tabular-nums}
@@ -80,6 +85,16 @@ main{max-width:760px;margin:0 auto;padding:22px 16px 0}
 .vazio h3{font-family:var(--display);font-weight:600;margin:0 0 6px;font-size:21px;color:var(--uva)}
 .vazio p{margin:0 0 16px;color:var(--suave)}
 .btn-wa{display:inline-block;background:var(--folha);color:#fff;text-decoration:none;font-weight:800;border-radius:999px;padding:12px 20px}
+
+/* foto ampliada */
+.zoom-fundo{position:fixed;inset:0;z-index:40;background:rgba(58,49,80,.6);display:flex;align-items:center;justify-content:center;padding:16px}
+.zoom{position:relative;background:#fff;border-radius:26px;overflow:hidden;width:100%;max-width:560px;max-height:100%;display:flex;flex-direction:column}
+.zoom::before{content:"";display:block;height:6px;background:var(--degrade);flex:none}
+.zoom img{width:100%;aspect-ratio:1/1;object-fit:contain;background:#fff;min-height:0}
+.z-info{padding:12px 16px 16px}
+.z-nome{font-weight:700;font-size:16px;line-height:1.3}
+.z-preco{font-family:var(--display);font-weight:700;font-size:24px;color:var(--framboesa)}
+.z-fechar{position:absolute;top:14px;right:10px;z-index:2;border:0;width:40px;height:40px;border-radius:50%;background:var(--lilas-claro);color:var(--uva);font-size:18px;font-weight:800}
 
 /* barra do pedido */
 .barra{position:fixed;left:0;right:0;bottom:0;z-index:20;background:#fff;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));box-shadow:0 -6px 22px rgba(110,88,184,.12)}
@@ -128,6 +143,14 @@ input{width:100%;font:inherit;padding:11px 14px;border-radius:999px;border:1.5px
   <div class="resumo"><b id="b-total">R$ 0,00</b><span id="b-itens">Nenhum item escolhido</span></div>
   <button class="ver" id="b-ver" disabled>Ver pedido</button>
 </div></div>
+
+<div class="zoom-fundo" id="zoom" hidden>
+  <div class="zoom" role="dialog" aria-modal="true" aria-labelledby="z-nome">
+    <button class="z-fechar" id="z-fechar" aria-label="Fechar foto">✕</button>
+    <img id="z-img" alt="">
+    <div class="z-info"><div class="z-nome" id="z-nome"></div><div class="z-preco" id="z-preco"></div></div>
+  </div>
+</div>
 
 <div class="folha-fundo" id="folha" hidden>
   <div class="folha" role="dialog" aria-modal="true" aria-labelledby="f-tit">
@@ -182,20 +205,39 @@ function topo(titulo, migalha){
   }
 }
 
+function fotosDe(c){
+  const ids = []; (function junta(x){ if (x.sub) x.sub.forEach(junta); else ids.push(x.id); })(c);
+  return PRODS.filter(p => ids.includes(p.cat) && p.img).map(p => p.img);
+}
 function listaCats(lista){
   const box = document.createElement("div"); box.className = "cats";
   lista.forEach(c => {
     const n = contaCat(c);
-    const b = document.createElement("button"); b.className = "cat";
-    b.innerHTML = '<b></b><span class="qt"></span><span class="seta">›</span>';
+    const b = document.createElement("button"); b.className = "cat" + (n ? "" : " cat-breve");
+    b.innerHTML = '<span class="cat-foto"></span><span class="cat-txt"><b></b><span class="qt"></span></span>';
     b.querySelector("b").textContent = c.nome;
     const q = b.querySelector(".qt");
     q.textContent = n ? n + (n === 1 ? " item" : " itens") : "em breve";
     if (!n) q.classList.add("breve");
+    const fotos = fotosDe(c), caixa = b.querySelector(".cat-foto");
+    // tenta as fotos da categoria até uma carregar
+    (function tenta(k){
+      if (k >= Math.min(fotos.length, 6)) { caixa.classList.add("sem"); return; }
+      const im = new Image(); im.alt = ""; im.referrerPolicy = "no-referrer";
+      im.onload = () => caixa.appendChild(im); im.onerror = () => tenta(k + 1); im.src = fotos[k];
+    })(0);
     b.onclick = () => { pilha.push(c.id); render(); window.scrollTo(0, 0); };
     box.appendChild(b);
   });
   return box;
+}
+
+// foto ampliada ao tocar no produto
+function ampliar(p){
+  const z = $("zoom"); z.hidden = false;
+  const im = $("z-img"); im.src = p.img; im.alt = p.nome;
+  $("z-nome").textContent = p.nome;
+  $("z-preco").textContent = p.preco ? real(p.preco) : "Consulte";
 }
 
 function cardProduto(p, i){
@@ -203,7 +245,7 @@ function cardProduto(p, i){
   d.innerHTML = '<div class="foto"><img alt=""><span class="num"></span></div><div class="info"><div class="nome"></div><div class="det"></div><div class="preco"></div><div class="acao"></div></div>';
   const im = d.querySelector("img"); im.alt = p.nome; im.loading = "lazy"; im.referrerPolicy = "no-referrer";
   im.onerror = () => { const f = im.parentNode; im.remove(); const s = document.createElement("div"); s.className = "semfoto"; s.textContent = "Foto indisponível"; f.appendChild(s); };
-  if (p.img) im.src = p.img; else im.onerror();
+  if (p.img) { im.src = p.img; d.querySelector(".foto").onclick = () => { if (im.isConnected) ampliar(p); }; d.querySelector(".foto").classList.add("toca"); } else im.onerror();
   d.querySelector(".num").textContent = "Nº " + String(i + 1).padStart(2, "0");
   d.querySelector(".nome").textContent = p.nome;
   d.querySelector(".det").textContent = p.det + (p.ean ? "\nCód. " + p.ean : "");
@@ -309,11 +351,13 @@ function abrirFolha(){ $("folha").hidden = false; desenharFolha(); }
 function fecharFolha(){ $("folha").hidden = true; }
 
 $("b-ver").onclick = abrirFolha;
+$("z-fechar").onclick = () => { $("zoom").hidden = true; };
+$("zoom").onclick = e => { if (e.target.id === "zoom") $("zoom").hidden = true; };
 $("f-fechar").onclick = fecharFolha;
 $("folha").onclick = e => { if (e.target.id === "folha") fecharFolha(); };
 $("f-nome").oninput = () => { $("f-enviar").href = waLink(mensagem()); };
 $("f-limpar").onclick = () => { carrinho = {}; salvar(); fecharFolha(); atualizarBarra(); render(); };
-document.addEventListener("keydown", e => { if (e.key === "Escape") fecharFolha(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") { fecharFolha(); $("zoom").hidden = true; } });
 
 // link direto para uma categoria: ...#papel-crepom abre direto nela
 function caminhoAte(id, lista = CATS, trilha = []){
