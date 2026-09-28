@@ -226,6 +226,18 @@ function topo(titulo, migalha){
   }
 }
 
+// Se a foto não abrir direto, tenta de novo por um servidor de imagens alternativo
+function viaProxy(url){ return "https://images.weserv.nl/?url=" + encodeURIComponent(url.replace(/^https?:\/\//, "")) + "&w=700&output=webp"; }
+function carregarFoto(im, url, falhou){
+  if (!url){ falhou(); return; }
+  let tentativa = 0;
+  im.onerror = () => {
+    tentativa++;
+    if (tentativa === 1 && /^https?:/.test(url)) im.src = viaProxy(url); else { im.onerror = null; falhou(); }
+  };
+  im.src = url;
+}
+
 function fotosDe(c){
   const ids = []; (function junta(x){ if (x.sub) x.sub.forEach(junta); else ids.push(x.id); })(c);
   return PRODS.filter(p => ids.includes(p.cat) && p.img).map(p => p.img);
@@ -245,7 +257,7 @@ function listaCats(lista){
     (function tenta(k){
       if (k >= Math.min(fotos.length, 6)) { caixa.classList.add("sem"); return; }
       const im = new Image(); im.alt = ""; im.referrerPolicy = "no-referrer";
-      im.onload = () => caixa.appendChild(im); im.onerror = () => tenta(k + 1); im.src = fotos[k];
+      im.onload = () => caixa.appendChild(im); carregarFoto(im, fotos[k], () => tenta(k + 1));
     })(0);
     b.onclick = () => { pilha.push(c.id); render(); window.scrollTo(0, 0); };
     box.appendChild(b);
@@ -254,9 +266,9 @@ function listaCats(lista){
 }
 
 // foto ampliada ao tocar no produto
-function ampliar(p){
+function ampliar(p, src){
   const z = $("zoom"); z.hidden = false;
-  const im = $("z-img"); im.src = p.img; im.alt = p.nome;
+  const im = $("z-img"); im.src = src || p.img; im.alt = p.nome;
   $("z-nome").textContent = p.nome;
   $("z-preco").textContent = p.preco ? real(p.preco) : "Consulte";
 }
@@ -265,8 +277,9 @@ function cardProduto(p, i){
   const d = document.createElement("article"); d.className = "prod"; d.dataset.id = p.id;
   d.innerHTML = '<div class="foto"><img alt=""><span class="num"></span></div><div class="info"><div class="nome"></div><div class="det"></div><div class="preco"></div><div class="acao"></div></div>';
   const im = d.querySelector("img"); im.alt = p.nome; im.loading = "lazy"; im.referrerPolicy = "no-referrer";
-  im.onerror = () => { const f = im.parentNode; im.remove(); const s = document.createElement("div"); s.className = "semfoto"; s.textContent = "Foto indisponível"; f.appendChild(s); };
-  if (p.img) { im.src = p.img; d.querySelector(".foto").onclick = () => { if (im.isConnected) ampliar(p); }; d.querySelector(".foto").classList.add("toca"); } else im.onerror();
+  const semFoto = () => { const f = im.parentNode; if (!f) return; im.remove(); f.classList.remove("toca"); const s = document.createElement("div"); s.className = "semfoto"; s.textContent = "Foto indisponível"; f.appendChild(s); };
+  carregarFoto(im, p.img, semFoto);
+  if (p.img) { d.querySelector(".foto").onclick = () => { if (im.isConnected) ampliar(p, im.currentSrc || im.src); }; d.querySelector(".foto").classList.add("toca"); }
   d.querySelector(".num").textContent = "Nº " + String(i + 1).padStart(2, "0");
   d.querySelector(".nome").textContent = p.nome;
   d.querySelector(".det").textContent = p.det + (p.ean ? "\nCód. " + p.ean : "");
@@ -359,7 +372,7 @@ function desenharFolha(){
   its.forEach(({p}) => {
     const r = document.createElement("div"); r.className = "item";
     r.innerHTML = '<img alt=""><div><div class="n"></div><div class="s"></div></div>';
-    const ri = r.querySelector("img"); ri.referrerPolicy = "no-referrer"; ri.onerror = () => { ri.style.visibility = "hidden"; }; if (p.img) ri.src = p.img; else ri.onerror();
+    const ri = r.querySelector("img"); ri.referrerPolicy = "no-referrer"; carregarFoto(ri, p.img, () => { ri.style.visibility = "hidden"; });
     r.querySelector(".n").textContent = p.nome;
     r.querySelector(".s").textContent = (p.preco ? real(p.preco) + " cada" : "Consulte") + (p.ean ? " · " + p.ean : "");
     r.appendChild(stepper(p));
